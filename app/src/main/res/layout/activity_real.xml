@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 실시간 화면 구성 레이아웃  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- 상단바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/btn_white_exit" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="right"
+            android:text="@string/lbl_real"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <!-- 스크롤 바는 단 한개의 차일드뷰를 가질 수 있다 : 전체 스크롤바 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 실시간 화면 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/total_device_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="70dp"
+                android:text="@string/lbl_total_device"
+                android:textSize="20sp" />
+
+            <!-- 장비를 옆으로 보기위한 옆 스크롤바 -->
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- 한줄씩 수평추가 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- 주소 넘버 / 장비 종류 셋팅 : Max 30까지 만들어놓기 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_addr_1"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:layout_marginLeft="130dp"
+                            android:text="1번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_2"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="2번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_3"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="3번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_4"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="4번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_5"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="5번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_6"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="6번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_7"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="7번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_8"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="8번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_9"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="9번" />
+
+                        <TextView
+                            android:id="@+id/lbl_addr_10"
+                            style="@style/CustomDeviceAddrStyle"
+                            android:text="10번" />
+                    </LinearLayout> <!-- 주소 넘버 / 장비 종류 셋팅 : Max 30까지 만들어놓기 끝 -->
+
+                    <!-- 셀프 -->
+                    <LinearLayout
+                        android:id="@+id/layout_self"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_self"
+                            style="@style/CustomDeviceNameStyle"
+                            android:text="셀프" />
+
+                        <Button
+                            android:id="@+id/btn_self_1"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="45dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_2"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_3"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_4"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_5"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_6"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_7"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_8"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_9"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_self_10"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+                    </LinearLayout> <!-- 셀프 끝 -->
+
+                    <!-- 진공 -->
+                    <LinearLayout
+                        android:id="@+id/layout_air"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_air"
+                            style="@style/CustomDeviceNameStyle"
+                            android:text="진공" />
+
+                        <Button
+                            android:id="@+id/btn_air_1"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="45dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_2"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_3"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_4"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_5"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_6"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_7"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_8"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_9"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_air_10"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+                    </LinearLayout> <!-- 진공 끝 -->
+
+                    <!-- 매트 -->
+                    <LinearLayout
+                        android:id="@+id/layout_mate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_mate"
+                            style="@style/CustomDeviceNameStyle"
+                            android:text="매트" />
+
+                        <Button
+                            android:id="@+id/btn_mate_1"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="45dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_2"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_3"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_4"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_5"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_6"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_7"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결" />
+
+                        <Button
+                            android:id="@+id/btn_mate_8"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_9"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_mate_10"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+                    </LinearLayout> <!-- 매트 끝 -->
+
+                    <!-- 카드충전기 -->
+                    <LinearLayout
+                        android:id="@+id/layout_charger"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_charger"
+                            style="@style/CustomDeviceNameStyle"
+                            android:text="충전기" />
+
+                        <Button
+                            android:id="@+id/btn_charger_1"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="45dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_charger_2"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_charger_3"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_charger_4"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_charger_5"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+                    </LinearLayout> <!-- 충전기 끝 -->
+
+                    <!-- 터치충전기 -->
+                    <LinearLayout
+                        android:id="@+id/layout_touch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_touch"
+                            style="@style/CustomDeviceNameStyle"
+                            android:text="터치" />
+
+                        <Button
+                            android:id="@+id/btn_touch_1"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="45dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_touch_2"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_touch_3"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_touch_4"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_touch_5"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+                    </LinearLayout> <!-- 터치충전기 끝 -->
+
+                    <!-- 리더기 -->
+                    <LinearLayout
+                        android:id="@+id/layout_reader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/lbl_reader"
+                            style="@style/CustomDeviceNameStyle"
+                            android:text="리더" />
+
+                        <Button
+                            android:id="@+id/btn_reader_1"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="45dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_2"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_3"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_4"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_5"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결" />
+
+                        <Button
+                            android:id="@+id/btn_reader_6"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_7"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_8"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_9"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/btn_reader_10"
+                            style="@style/CustomDeviceNameStyle"
+                            android:layout_marginLeft="55dp"
+                            android:background="#3498db"
+                            android:text="연결"
+                            android:visibility="invisible" />
+                    </LinearLayout> <!-- 리더 끝 -->
+
+                    <!-- 오늘의 매출 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            style="@style/CustomTodaySalesStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="오늘의 매출"
+                            android:paddingLeft="150dp"/>
+
+                        <TableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="80dp">
+                            <!--android:stretchColumns="0,1,2"-->
+
+
+                            <TableRow android:background="#000000">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="100dp"
+                                    android:layout_margin="1dp"
+                                    android:layout_weight="1"
+                                    android:background="#eaeaea"
+                                    android:gravity="center"
+                                    android:text="매출액"
+                                    android:textColor="#000000"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="100dp"
+                                    android:layout_margin="1dp"
+                                    android:layout_weight="1"
+                                    android:background="#eaeaea"
+                                    android:gravity="center"
+                                    android:text="수입액"
+                                    android:textColor="#000000"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="100dp"
+                                    android:layout_margin="1dp"
+                                    android:layout_weight="1"
+                                    android:background="#eaeaea"
+                                    android:gravity="center"
+                                    android:text="충전액"
+                                    android:textColor="#000000"
+                                    android:textSize="24sp" />
+                            </TableRow>
+                            <TableRow android:background="#000000">
+
+                                <TextView
+                                    android:id="@+id/lbl_today_sales"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="1dp"
+                                    android:layout_weight="1"
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:text="0원"
+                                    android:textColor="#000000"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/lbl_today_income"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="1dp"
+                                    android:layout_weight="1"
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:text="0원"
+                                    android:textColor="#000000"
+                                    android:textSize="24sp" />
+
+                                <TextView
+                                    android:id="@+id/lbl_today_charge"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="1dp"
+                                    android:layout_weight="1"
+                                    android:background="#ffffff"
+                                    android:gravity="center"
+                                    android:text="0원"
+                                    android:textColor="#000000"
+                                    android:textSize="24sp" />
+                            </TableRow>
+                        </TableLayout>
+
+                    </LinearLayout> <!-- 오늘의 매출 끝 -->
+
+                    <!-- 월별/일별 매출 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_month_sales"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="#3498db"
+                        android:textColor="#ffffff"
+                        android:text="월별조회"
+                        android:textSize="24sp"/>
+
+
+                    <Button
+                        android:id="@+id/btn_day_sales"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="#3498db"
+                        android:textColor="#ffffff"
+                        android:text="일별조회"
+                        android:textSize="24sp" />
+                    </LinearLayout> <!-- 월별/일별 매출 끝 -->
+
+                </LinearLayout> <!-- 한줄씩 수평 추가 끝-->
+
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
