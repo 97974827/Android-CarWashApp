@@ -2,42 +2,54 @@
 
 <!-- 실시간 화면 구성 레이아웃  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <!-- 상단바 -->
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/btn_white_exit" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="right"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
             android:text="@string/lbl_real"
-            android:textSize="30sp"
-            android:textStyle="bold"/>
+            />
+    </androidx.appcompat.widget.Toolbar>
 
-    </LinearLayout>
+    <!-- 텝 레이아웃 -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextColor="@android:color/black"
+        app:tabSelectedTextColor="@android:color/holo_red_dark"
+        app:tabIndicatorColor="@android:color/black">
+    </com.google.android.material.tabs.TabLayout>
 
-    <!-- 스크롤 바는 단 한개의 차일드뷰를 가질 수 있다 : 전체 스크롤바 -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.viewpager.widget.ViewPager>
+
+    <!--&lt;!&ndash; 스크롤 바는 단 한개의 차일드뷰를 가질 수 있다 : 전체 스크롤바 &ndash;&gt;
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- 실시간 화면 -->
+        &lt;!&ndash; 실시간 화면 &ndash;&gt;
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,19 +66,19 @@
                 android:text="@string/lbl_total_device"
                 android:textSize="20sp" />
 
-            <!-- 장비를 옆으로 보기위한 옆 스크롤바 -->
+            &lt;!&ndash; 장비를 옆으로 보기위한 옆 스크롤바 &ndash;&gt;
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- 한줄씩 수평추가 -->
+                &lt;!&ndash; 한줄씩 수평추가 &ndash;&gt;
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- 주소 넘버 / 장비 종류 셋팅 : Max 30까지 만들어놓기 -->
+                    &lt;!&ndash; 주소 넘버 / 장비 종류 셋팅 : Max 30까지 만들어놓기 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -122,9 +134,9 @@
                             android:id="@+id/lbl_addr_10"
                             style="@style/CustomDeviceAddrStyle"
                             android:text="10번" />
-                    </LinearLayout> <!-- 주소 넘버 / 장비 종류 셋팅 : Max 30까지 만들어놓기 끝 -->
+                    </LinearLayout> &lt;!&ndash; 주소 넘버 / 장비 종류 셋팅 : Max 30까지 만들어놓기 끝 &ndash;&gt;
 
-                    <!-- 셀프 -->
+                    &lt;!&ndash; 셀프 &ndash;&gt;
                     <LinearLayout
                         android:id="@+id/layout_self"
                         android:layout_width="match_parent"
@@ -216,9 +228,9 @@
                             android:background="#3498db"
                             android:text="연결"
                             android:visibility="invisible" />
-                    </LinearLayout> <!-- 셀프 끝 -->
+                    </LinearLayout> &lt;!&ndash; 셀프 끝 &ndash;&gt;
 
-                    <!-- 진공 -->
+                    &lt;!&ndash; 진공 &ndash;&gt;
                     <LinearLayout
                         android:id="@+id/layout_air"
                         android:layout_width="match_parent"
@@ -310,9 +322,9 @@
                             android:background="#3498db"
                             android:text="연결"
                             android:visibility="invisible" />
-                    </LinearLayout> <!-- 진공 끝 -->
+                    </LinearLayout> &lt;!&ndash; 진공 끝 &ndash;&gt;
 
-                    <!-- 매트 -->
+                    &lt;!&ndash; 매트 &ndash;&gt;
                     <LinearLayout
                         android:id="@+id/layout_mate"
                         android:layout_width="match_parent"
@@ -403,9 +415,9 @@
                             android:background="#3498db"
                             android:text="연결"
                             android:visibility="invisible" />
-                    </LinearLayout> <!-- 매트 끝 -->
+                    </LinearLayout> &lt;!&ndash; 매트 끝 &ndash;&gt;
 
-                    <!-- 카드충전기 -->
+                    &lt;!&ndash; 카드충전기 &ndash;&gt;
                     <LinearLayout
                         android:id="@+id/layout_charger"
                         android:layout_width="match_parent"
@@ -457,9 +469,9 @@
                             android:background="#3498db"
                             android:text="연결"
                             android:visibility="invisible" />
-                    </LinearLayout> <!-- 충전기 끝 -->
+                    </LinearLayout> &lt;!&ndash; 충전기 끝 &ndash;&gt;
 
-                    <!-- 터치충전기 -->
+                    &lt;!&ndash; 터치충전기 &ndash;&gt;
                     <LinearLayout
                         android:id="@+id/layout_touch"
                         android:layout_width="match_parent"
@@ -511,9 +523,9 @@
                             android:background="#3498db"
                             android:text="연결"
                             android:visibility="invisible" />
-                    </LinearLayout> <!-- 터치충전기 끝 -->
+                    </LinearLayout> &lt;!&ndash; 터치충전기 끝 &ndash;&gt;
 
-                    <!-- 리더기 -->
+                    &lt;!&ndash; 리더기 &ndash;&gt;
                     <LinearLayout
                         android:id="@+id/layout_reader"
                         android:layout_width="match_parent"
@@ -604,9 +616,9 @@
                             android:background="#3498db"
                             android:text="연결"
                             android:visibility="invisible" />
-                    </LinearLayout> <!-- 리더 끝 -->
+                    </LinearLayout> &lt;!&ndash; 리더 끝 &ndash;&gt;
 
-                    <!-- 오늘의 매출 -->
+                    &lt;!&ndash; 오늘의 매출 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -625,7 +637,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="80dp">
-                            <!--android:stretchColumns="0,1,2"-->
+                            &lt;!&ndash;android:stretchColumns="0,1,2"&ndash;&gt;
 
 
                             <TableRow android:background="#000000">
@@ -703,9 +715,9 @@
                             </TableRow>
                         </TableLayout>
 
-                    </LinearLayout> <!-- 오늘의 매출 끝 -->
+                    </LinearLayout> &lt;!&ndash; 오늘의 매출 끝 &ndash;&gt;
 
-                    <!-- 월별/일별 매출 -->
+                    &lt;!&ndash; 월별/일별 매출 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -735,11 +747,12 @@
                         android:textColor="#ffffff"
                         android:text="일별조회"
                         android:textSize="24sp" />
-                    </LinearLayout> <!-- 월별/일별 매출 끝 -->
+                    </LinearLayout> &lt;!&ndash; 월별/일별 매출 끝 &ndash;&gt;
 
-                </LinearLayout> <!-- 한줄씩 수평 추가 끝-->
+                </LinearLayout> &lt;!&ndash; 한줄씩 수평 추가 끝&ndash;&gt;
 
             </HorizontalScrollView>
         </LinearLayout>
-    </ScrollView>
+    </ScrollView>-->
+
 </LinearLayout>

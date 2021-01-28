@@ -8,8 +8,8 @@ android {
         applicationId "com.gls.carwashapp"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 3
-        versionName "3.0"
+        versionCode 5
+        versionName "5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,9 +26,17 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.android.volley:volley:1.1.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    // implementation 'ru.send-to.gwt:EventBus:2.8.1.5'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 }

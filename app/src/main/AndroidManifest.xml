@@ -12,19 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--.NoActionBar">-->
-        <activity android:name="com.gls.carwashapp.activity.DaySalesActivity"></activity>
-        <activity android:name="com.gls.carwashapp.activity.MonthSalesActivity" />
-        <activity android:name="com.gls.carwashapp.activity.SelectRealActivity" />
-        <activity android:name="com.gls.carwashapp.activity.RealActivity" />
-        <activity android:name="com.gls.carwashapp.activity.LoginActivity">
+        <!-- .NoActionBar"> -->
+        <activity android:name=".activity.DaySalesActivity" />
+        <activity android:name=".activity.MonthSalesActivity" />
+        <activity android:name=".activity.SelectRealActivity" />
+        <activity android:name=".activity.RealActivity" />
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- 새로운 액티비티를 만들어 앱에 추가시 새 액티비티 정보가 추가됨 -->
-        <activity android:name="com.gls.carwashapp.activity.MainActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

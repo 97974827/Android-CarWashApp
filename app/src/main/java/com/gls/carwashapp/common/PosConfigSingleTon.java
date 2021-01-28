@@ -1,14 +1,14 @@
 package com.gls.carwashapp.common;
 
-import com.gls.carwashapp.model.PosConfigVO;
+import com.gls.carwashapp.model.Config;
 
 public class PosConfigSingleTon {
 
-    private static PosConfigVO config = null;
+    private static Config config = null;
 
-    public static PosConfigVO getInstance(){
+    public static Config getInstance(){
         if (config == null){
-            config = new PosConfigVO();
+            config = new Config();
         }
         return config;
     }

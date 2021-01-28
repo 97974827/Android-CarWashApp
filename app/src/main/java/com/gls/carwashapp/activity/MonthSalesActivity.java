@@ -6,12 +6,10 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
@@ -24,7 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.gls.carwashapp.common.AppHelper;
+import com.gls.carwashapp.common.CustomViewPagerAdapter;
 import com.gls.carwashapp.R;
 
 import org.json.JSONArray;
@@ -180,7 +178,7 @@ public class MonthSalesActivity extends AppCompatActivity{// implements DatePick
         year = y;
         month = m+1;
 
-        String url = AppHelper.url + "get_monthly_sales";
+        String url = CustomViewPagerAdapter.url + "get_monthly_sales";
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("매출정보를 불러오는 중입니다....");
@@ -255,7 +253,7 @@ public class MonthSalesActivity extends AppCompatActivity{// implements DatePick
         };
 
         request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
-        AppHelper.requestQueue.add(request); // 큐에 넣어줌
+        CustomViewPagerAdapter.requestQueue.add(request); // 큐에 넣어줌
     }
 
 

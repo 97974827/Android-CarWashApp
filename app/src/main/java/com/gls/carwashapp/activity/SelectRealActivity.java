@@ -1,25 +1,24 @@
 package com.gls.carwashapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.gls.carwashapp.common.AppHelper;
+import com.gls.carwashapp.common.CustomViewPagerAdapter;
 import com.gls.carwashapp.R;
 
 import org.json.JSONArray;
@@ -31,8 +30,7 @@ import java.util.Map;
 
 // 선택한 장비 모니터링 액티비티
 public class SelectRealActivity extends AppCompatActivity {
-    ImageButton btnBack;
-
+    Toolbar toolBar;
     TextView lblDeviceName;
 
     int deviceType;
@@ -61,8 +59,8 @@ public class SelectRealActivity extends AppCompatActivity {
 
         // 인텐트 객체 데이터 불러오기
         Intent intent = getIntent();
-        deviceType = intent.getExtras().getInt("device_type");
-        deviceAddr = intent.getExtras().getString("device_addr");
+        deviceType = intent.getExtras().getInt("type");
+        deviceAddr = intent.getExtras().getString("addr");
         bindView();
 
         Thread thread = new Thread(new Runnable() {
@@ -111,17 +109,26 @@ public class SelectRealActivity extends AppCompatActivity {
         RealActivity.isState = true;
     }
 
-    public void bindView(){
-        btnBack = (ImageButton) findViewById(R.id.btn_back);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RealActivity.class);
-                startActivity(intent);
+    // 뒤로가기
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{
+                finish();
+                return true;
             }
-        });
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void bindView(){
+        toolBar = (Toolbar) findViewById(R.id.bar);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기버튼, 디폴트 true만 해도 생김
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // 기존 타이틀 제거
 
         lblDeviceName = (TextView) findViewById(R.id.lbl_device_name);
+        tblDevice = (TableLayout) findViewById(R.id.tbl_device);
         trTime = (TextView) findViewById(R.id.tr_time);
         trCash = (TextView) findViewById(R.id.tr_cash);
 
@@ -137,16 +144,16 @@ public class SelectRealActivity extends AppCompatActivity {
         String tempStr = "";
         switch (deviceType) {
             case 0:
-                tempStr = deviceAddr + " 번 셀프 세차기";
+                tempStr = deviceAddr + "번 셀프 세차기";
                 break;
             case 1:
-                tempStr = deviceAddr + " 번 진공 청소기";
+                tempStr = deviceAddr + "번 진공 청소기";
                 break;
             case 2:
-                tempStr = deviceAddr + " 번 매트 청소기";
+                tempStr = deviceAddr + "번 매트 청소기";
                 break;
             case 3:
-                tempStr = deviceAddr + " 번 카드 충전기";
+                tempStr = deviceAddr + "번 카드 충전기";
                 trTime.setText("당일 충전");
                 trCash.setText("발급 수");
                 tdTime.setText("0원");
@@ -157,7 +164,7 @@ public class SelectRealActivity extends AppCompatActivity {
                 tdSales.setVisibility(View.GONE);
                 break;
             case 6:
-                tempStr = deviceAddr + " 번 터치 충전기";
+                tempStr = deviceAddr + "번 터치 충전기";
                 trTime.setText("당일 충전");
                 trCash.setText("발급 수");
                 tdTime.setText("0원");
@@ -168,14 +175,15 @@ public class SelectRealActivity extends AppCompatActivity {
                 tdSales.setVisibility(View.GONE);
                 break;
             case 9:
-                tempStr = deviceAddr + " 번 리더기";
+                tempStr = deviceAddr + "번 리더기";
+                trTime.setText("사용 시간");
                 break;
         }
         lblDeviceName.setText(tempStr);
     }
 
     public void selectDeviceState(){
-        String url = AppHelper.url + "get_device_state";
+        String url = CustomViewPagerAdapter.url + "get_device_state";
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -185,7 +193,6 @@ public class SelectRealActivity extends AppCompatActivity {
                     public void onResponse(String response) { // 여기에 응답이 떨어짐
 
                         try {
-
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray result = jsonObject.getJSONArray("result");
 
@@ -205,11 +212,10 @@ public class SelectRealActivity extends AppCompatActivity {
 
                                 device_type = job.getInt("device_type");
                                 device_addr = job.getString("device_addr").substring(1,2);
-                                Log.d("device_type", Integer.toString(device_type));
-                                Log.d("device_addr", device_addr);
+//                                Log.d("device_type", Integer.toString(device_type));
+//                                Log.d("device_addr", device_addr);
 
                                 if (deviceType == device_type && (deviceAddr.equals(device_addr))) {
-
                                     switch (deviceType) {
                                         case 0:
                                         case 1:
@@ -229,8 +235,6 @@ public class SelectRealActivity extends AppCompatActivity {
                                                 tdTime.setTextColor(Color.BLUE);
                                             } else if (Integer.parseInt(remainTime) > 0 && Integer.parseInt(remainTime) <= 10){
                                                 tdTime.setTextColor(Color.RED);
-                                            } else {
-                                                tdTime.setTextColor(Color.BLACK);
                                             }
                                             break;
                                         case 3:
@@ -244,7 +248,6 @@ public class SelectRealActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-
 
                         } catch (Exception e){
                             e.printStackTrace();
@@ -268,7 +271,7 @@ public class SelectRealActivity extends AppCompatActivity {
         };
 
         request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
-        AppHelper.requestQueue.add(request); // 큐에 넣어줌
+        CustomViewPagerAdapter.requestQueue.add(request); // 큐에 넣어줌
 
     }
 

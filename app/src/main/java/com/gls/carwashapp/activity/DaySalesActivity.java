@@ -22,7 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.gls.carwashapp.common.AppHelper;
+import com.gls.carwashapp.common.CustomViewPagerAdapter;
 import com.gls.carwashapp.R;
 
 import org.json.JSONArray;
@@ -87,7 +87,7 @@ public class DaySalesActivity extends AppCompatActivity {
 
     // 일별 매출조회
     public void getDaySales(int y, int m, int d){
-        String url = AppHelper.url + "get_days_sales";
+        String url = CustomViewPagerAdapter.url + "get_days_sales";
         year = y;
         month = m;
         days = d;
@@ -169,7 +169,7 @@ public class DaySalesActivity extends AppCompatActivity {
         };
 
         request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
-        AppHelper.requestQueue.add(request); // 큐에 넣어줌
+        CustomViewPagerAdapter.requestQueue.add(request); // 큐에 넣어줌
     }
 
     // 테이블 동적 생성하기
