@@ -38,8 +38,8 @@ public class ChargerFragment extends Fragment {
     String connect;
 
     ArrayList<RealItem> chargerItemsList;// = new ArrayList<>();
-    int chargerCount = Integer.parseInt(LoginActivity.vo.getChargerCount());
-    RealItem[] chargerItems = new RealItem[chargerCount];
+    int chargerCount;
+    RealItem[] chargerItems;// = new RealItem[chargerCount];
 
     Comparator<RealItem> cmpAsc = new Comparator<RealItem>() {
         @Override
@@ -57,6 +57,10 @@ public class ChargerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        try {
+            chargerCount = Integer.parseInt(LoginActivity.vo.getChargerCount());
+            chargerItems = new RealItem[chargerCount];
+        } catch(Exception e) {e.printStackTrace();}
 
         activity = (RealActivity) getActivity();
         View rootView = inflater.inflate(R.layout.fragment_charger, container, false);

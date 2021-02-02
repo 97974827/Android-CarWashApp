@@ -40,8 +40,8 @@ public class ReaderFragment extends Fragment {
     String connect;
 
     ArrayList<RealItem> readerItemsList;// = new ArrayList<>();
-    int readerCount = Integer.parseInt(LoginActivity.vo.getReaderCount());
-    RealItem[] readerItems = new RealItem[readerCount];
+    int readerCount;// = Integer.parseInt(LoginActivity.vo.getReaderCount());
+    RealItem[] readerItems;// = new RealItem[readerCount];
 
     Comparator<RealItem> cmpAsc = new Comparator<RealItem>() {
         @Override
@@ -59,7 +59,11 @@ public class ReaderFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        Log.d("RealActivity.isState : ", Boolean.toString(RealActivity.isState));
+        try {
+            readerCount = Integer.parseInt(LoginActivity.vo.getReaderCount());
+            readerItems = new RealItem[readerCount];
+        } catch(Exception e) {e.printStackTrace();}
+
         activity = (RealActivity) getActivity();
         View rootView = inflater.inflate(R.layout.fragment_reader, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);

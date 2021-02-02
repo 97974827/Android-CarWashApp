@@ -38,8 +38,9 @@ public class SelfFragment extends Fragment {
     String connect;
 
     ArrayList<RealItem> selfItemsList;
-    int selfCount = Integer.parseInt(LoginActivity.vo.getSelfCount());
-    RealItem[] selfItems = new RealItem[selfCount];
+    int selfCount;
+
+    RealItem[] selfItems;// = new RealItem[selfCount];
 
     Comparator<RealItem> cmpAsc = new Comparator<RealItem>() {
         @Override
@@ -57,6 +58,11 @@ public class SelfFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        try {
+            selfCount = Integer.parseInt(LoginActivity.vo.getSelfCount());
+            selfItems = new RealItem[selfCount];
+        } catch(Exception e) {e.printStackTrace();}
+
         activity = (RealActivity) getActivity();
         View rootView = inflater.inflate(R.layout.fragment_self, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);

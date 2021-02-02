@@ -1,5 +1,6 @@
 package com.gls.carwashapp.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,14 +39,31 @@ public class LoginActivity extends AppCompatActivity {
     private EditText textPw; // 비밀번호
 
     Button btnLogin;
-    Button btnExit;
 
     public static Config vo = PosConfigSingleTon.getInstance();
     public Config config;
 
-    // 이 메서드에 초기화 작업을 해주기
+    // 앱 비정상종료 로그 변수
+    private String TAG = LoginActivity.class.getSimpleName();
+    private Thread.UncaughtExceptionHandler androidDefaultUEH;
+    private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
+
+    public Thread.UncaughtExceptionHandler getUncaughtExceptionHandler(){
+        return uncaughtExceptionHandler;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        androidDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
+        uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(@NonNull Thread thread, @NonNull Throwable throwable) {
+                Log.e(TAG, "error-----------------> " + throwable.toString());
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(10);
+            }
+        };
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login); // 화면에 무엇을 보여줄지 결정하는 메서드
 
@@ -59,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
 
         textId.setText(loginId);
         textPw.setText(loginPw);
-
     }
 
     // 종료호출 메서드
@@ -95,10 +113,10 @@ public class LoginActivity extends AppCompatActivity {
                 // 로그인 검증
                 if (isLogin()) {
                     Intent intent = new Intent(getApplicationContext(), RealActivity.class);
-                    intent.putExtra("config", config);
+//                    intent.putExtra("config", config);
                     Toast.makeText(getApplicationContext(), textId.getText().toString() + "님 환영합니다.", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
-                    finish();
+//                    finish();
                 } else {
                     showMessage();
                 }
@@ -165,8 +183,14 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Toast.makeText(getApplicationContext(),
-                            "모바일 데이터를 이용해주세요.",Toast.LENGTH_SHORT).show();
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.data != null) {
+                            String jsonError = new String(networkResponse.data);
+                            Log.d("TAG", "onErrorResponse: " + jsonError);
+                        }
+                        Log.d("TAG", "onErrorResponse : " + String.valueOf(error));
+//                        Toast.makeText(getApplicationContext(),
+//                            "모바일 데이터를 이용해주세요.",Toast.LENGTH_SHORT).show();
                     }
                 }
         ){
