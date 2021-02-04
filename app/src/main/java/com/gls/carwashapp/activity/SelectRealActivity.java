@@ -239,6 +239,7 @@ public class SelectRealActivity extends AppCompatActivity {
                                             break;
                                         case 3:
                                         case 6:
+                                        case 7:
                                             charge = job.getString("charge");
                                             issueCount = job.getInt("count");
                                             tdTime.setText(String.format("%,d", Integer.parseInt(charge)) + "원");

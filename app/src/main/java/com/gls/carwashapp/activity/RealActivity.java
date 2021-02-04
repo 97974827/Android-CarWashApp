@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -42,12 +43,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
 // 실시간 모니터링 엑티비티
 public class RealActivity extends AppCompatActivity {
 
+    private static final String TAG = RealActivity.class.getSimpleName();
     ProgressDialog progressDialog;
     Handler handler = new Handler();
 
@@ -56,7 +59,6 @@ public class RealActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     Config config;
-
     public static boolean isState = false; // OFF
 
     int deviceType;
@@ -67,17 +69,25 @@ public class RealActivity extends AppCompatActivity {
     ArrayList<Fragment> fragmentList;
 
     SelfFragment selfFragment;
+    AirFragment airFragment;
+    MateFragment mateFragment;
     ChargerFragment chargerFragment;
     ReaderFragment readerFragment;
+    TouchFragment touchFragment;
+    KioskFragment kioskFragment;
+    GarageFragment garageFragment;
 
     RecyclerView recyclerView; // 리스트
     CustomRecyclerViewAdapter customRecyclerViewAdapter;
+
+    Map<String, Object> resultMap = new LinkedHashMap<>();
 
 //    EventBus selfBus = null;
 //    EventBus chargerBus = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() 호출됨");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real);
 
@@ -90,12 +100,26 @@ public class RealActivity extends AppCompatActivity {
         progressDialog.show();
 
         bindView(getIntent());
+    }
 
+    // onPause 직전에 호출되는 부분, 강제로 종료되는 상황에 대비하여 액티비티 상태정보 저장
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState() 호출됨");
+        outState.putInt("type", deviceType);
+        outState.putString("addr", deviceAddr);
+        outState.putString("connect", connect);
+        Log.d("type", Integer.toString(deviceType));
+        Log.d("addr", deviceAddr);
+        Log.d("connect", connect);
     }
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "onStart() 호출됨");
         super.onStart();
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -105,10 +129,9 @@ public class RealActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             getDeviceState();
-//                            getLanDeviceState();
+                            getLanDeviceState();
                         }
                     });
-
                     try {
                         Thread.sleep(2000);
                     } catch(Exception e) {}
@@ -119,19 +142,39 @@ public class RealActivity extends AppCompatActivity {
         thread.start();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() 호출됨");
+    }
+
     // 액티비티 돌아왔을때 재시작
     @Override
     public void onRestart() {
         super.onRestart();
+        Log.d(TAG, "onRestart() 호출됨");
         SelectRealActivity.isSelectState = false;
         isState = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() 호출됨");
     }
 
     // 앱 종료 메서드 : back 버튼으로 스레드 중지 안 됬을때 방지
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "onStop() 호출됨");
         isState = false; // 스레드 중지
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() 호출됨");
     }
 
     // 툴바 메뉴가 클릭 되었을때 호출
@@ -149,9 +192,9 @@ public class RealActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // 인텐트 객체 가져오기 & 뷰 바인딩
+    // 뷰 바인딩
     public void bindView(Intent intent){
-//        config = (PosConfigVO) intent.getSerializableExtra("config");
+//        config = (Config) intent.getSerializableExtra("config");
         // 툴바 생성
         toolBar = (Toolbar) findViewById(R.id.bar);
         setSupportActionBar(toolBar);
@@ -168,27 +211,34 @@ public class RealActivity extends AppCompatActivity {
         fragmentList.add(selfFragment);
         chargerFragment = new ChargerFragment();
         fragmentList.add(chargerFragment);
+        touchFragment = new TouchFragment();
+        fragmentList.add(touchFragment);
         readerFragment = new ReaderFragment();
 
         if (LoginActivity.vo.getManagerNo()==1 || LoginActivity.vo.getManagerNo()==4 || LoginActivity.vo.getManagerNo()==2) {
-            fragmentList.add(new AirFragment());
-            fragmentList.add(new MateFragment());
-            fragmentList.add(new TouchFragment());
-            fragmentList.add(new KioskFragment());
-            fragmentList.add(new GarageFragment());
+            airFragment = new AirFragment();
+            mateFragment = new MateFragment();
+            kioskFragment = new KioskFragment();
+//            garageFragment = new GarageFragment();
+            fragmentList.add(airFragment);
+            fragmentList.add(mateFragment);
+            fragmentList.add(kioskFragment);
+//            fragmentList.add(garageFragment);
         } else if (LoginActivity.vo.getManagerNo()==3 || LoginActivity.vo.getManagerNo()==5) {
             fragmentList.add(readerFragment);
         }
 
         // 뷰페이저 어댑터 생성
         adapter = new CustomViewPagerAdapter(getSupportFragmentManager(), fragmentList);
+
         // 탭 메뉴 추가
         tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(0))); // 셀프
         tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(3))); // 충전기
+        tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(4))); // 터치
+
         if (LoginActivity.vo.getManagerNo()==1 || LoginActivity.vo.getManagerNo()==4 || LoginActivity.vo.getManagerNo()==2) {
             tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(1))); // 진공
             tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(2))); // 매트
-            tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(4))); // 터치
             tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(5))); // 키오스크
             tabLayout.addTab(tabLayout.newTab().setText(adapter.getPageTitle(7))); // 개러지
 //            ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(5).setVisibility(View.GONE); // 탭메뉴 숨기기
@@ -285,8 +335,12 @@ public class RealActivity extends AppCompatActivity {
                                         selfFragment.changeUI();
                                         break;
                                     case 1:
+                                        airFragment.setArguments(bundle);
+                                        airFragment.changeUI();
                                         break;
                                     case 2:
+                                        mateFragment.setArguments(bundle);
+                                        mateFragment.changeUI();
 //                                        EventBus.getDefault().post(new DataEvent(deviceAddr, connect));
                                         break;
                                     case 3:
@@ -308,7 +362,7 @@ public class RealActivity extends AppCompatActivity {
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Log.d("TAG", "onErrorResponse : " + String.valueOf(error));
+                        Log.d("TAG", "getDeviceState onErrorResponse : " + String.valueOf(error));
                     }
                 }
         ){
@@ -323,6 +377,70 @@ public class RealActivity extends AppCompatActivity {
         request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
         CustomViewPagerAdapter.requestQueue.add(request); // 큐에 넣어줌
 
+    }
+
+    // LAN 실시간 모니터링
+    public void getLanDeviceState(){
+        String url = CustomViewPagerAdapter.url + "get_lan_device_state";
+
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray result = jsonObject.getJSONArray("result");
+
+//                            int deviceType = 0;
+//                            String deviceAddr = "";
+//                            String connect = "";
+                            for (int i=0; i < result.length(); i++) {
+                                JSONObject job = result.getJSONObject(i);  // JSONObject 추출
+
+                                deviceType = job.getInt("device_type");
+                                deviceAddr = job.getString("device_addr");
+                                connect = job.getString("connect");
+
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("type", deviceType);
+                                bundle.putString("addr", deviceAddr);
+                                bundle.putString("connect", connect);
+
+                                switch (deviceType) {
+                                    case 6:
+                                        touchFragment.setArguments(bundle);
+                                        touchFragment.changeUI();
+                                        break;
+                                    case 7:
+                                        break;
+                                }
+                            }
+
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+        },
+            new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error){
+                    Log.d("TAG", "LanDeviceState ** onErrorResponse : " + String.valueOf(error));
+                }
+            }){
+            // 요청 파라미터 추가
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+        };
+
+        request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
+        CustomViewPagerAdapter.requestQueue.add(request); // 큐에 넣어줌
     }
 
     /*// 오늘의 매출
@@ -375,76 +493,7 @@ public class RealActivity extends AppCompatActivity {
         AppHelper.requestQueue.add(request); // 큐에 넣어줌
     }
 
-    // LAN 실시간 모니터링
-    public void getLanDeviceState(){
-        String url = AppHelper.url + "get_lan_device_state";
 
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                url,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray result = jsonObject.getJSONArray("result");
-
-                            int deviceType = 0;
-                            String deviceAddr = "";
-                            String connect = "";
-
-                            // 장비갯수 가져오기
-                            int touchCount = Integer.parseInt(LoginActivity.vo.getTouchCount());
-
-                            for (int i=0; i < result.length(); i++) {
-                                JSONObject job= result.getJSONObject(i);  // JSONObject 추출
-
-                                deviceType = job.getInt("device_type");
-                                deviceAddr = job.getString("device_addr");
-                                connect = job.getString("connect");
-
-                                switch (deviceType){
-                                    case 6:
-                                        for (int j = 0; j < touchCount; j++) {
-                                            btnTouchList[j].setVisibility(View.VISIBLE);
-                                            if (connect.equals("1")) {
-                                                btnTouchList[j].setText("연결");
-                                                btnTouchList[j].setBackgroundResource(R.color.on);
-                                            } else {
-                                                btnTouchList[j].setText("끊김");
-                                                btnTouchList[j].setBackgroundResource(R.color.off);
-                                            }
-                                        }
-                                        break;
-                                }
-                            }
-
-
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                    }
-                }
-        ){
-            // 요청 파라미터 추가
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                return params;
-            }
-        };
-
-        request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
-        AppHelper.requestQueue.add(request); // 큐에 넣어줌
-
-    }
 
     // 장비 갯수 비교
     public int deviceCountCompare(int firstCount, int secondCount){

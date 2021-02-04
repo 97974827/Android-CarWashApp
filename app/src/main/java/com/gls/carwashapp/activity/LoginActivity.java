@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.gls.carwashapp.common.CustomViewPagerAdapter;
+import com.gls.carwashapp.common.NetworkStatus;
 import com.gls.carwashapp.common.PosConfigSingleTon;
 import com.gls.carwashapp.model.Config;
 import com.gls.carwashapp.R;
@@ -54,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // 비정상종료 예외처리
         androidDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
         uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
             @Override
@@ -68,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login); // 화면에 무엇을 보여줄지 결정하는 메서드
 
         bindView(); // 디자인 필드 바인딩
-        config = getPosConfig();
+        try { config = getPosConfig(); } catch(Exception e){ e.printStackTrace(); }
 
         // 처음에는 SharedPreferences에 아무런 정보도 없으므로 값을 저장할 키들을 생성한다.
         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
@@ -98,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("id", id);
         editor.putString("pw", pw);
 
-        editor.commit(); // 파일에 최종 반영함 꼭!!!!!!
+        editor.commit(); // 파일에 최종 반영
     }
 
     // 뷰(안드로이드 화면 구성요소) 속성들 정의 메서드
@@ -110,15 +113,17 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 로그인 검증
-                if (isLogin()) {
-                    Intent intent = new Intent(getApplicationContext(), RealActivity.class);
-//                    intent.putExtra("config", config);
-                    Toast.makeText(getApplicationContext(), textId.getText().toString() + "님 환영합니다.", Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-//                    finish();
+                if (isNetStatus()) { // 인터넷 연결검증
+                    if (isLogin(vo)) { // 로그인 검증
+                        Intent intent = new Intent(getApplicationContext(), RealActivity.class);
+//                        intent.putExtra("config", config);
+                        Toast.makeText(getApplicationContext(), textId.getText().toString() + "님 환영합니다.", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
+                    } else {
+                        showMessage("\n아이디나 패스워드가 일치하지 않습니다. \n다시 확인해주세요.");
+                    }
                 } else {
-                    showMessage();
+                    showMessage("\n인터넷 연결상태를 체크해주세요.");
                 }
             }
         });
@@ -129,10 +134,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void showMessage(){
+    private void showMessage(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("안내");
-        builder.setMessage("\n아이디나 패스워드를 확인해주세요");
+        builder.setMessage(message);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
 
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -207,24 +212,22 @@ public class LoginActivity extends AppCompatActivity {
         return vo;
     }
 
-    // 로그인 검증
-    public boolean isLogin(/*PosConfigVO vo*/){
-        if (textId.getText().toString().equals("admin")) {
-            if (textPw.getText().toString().equals("admin1234")) {
+    public boolean isNetStatus(){
+        int netStatus = NetworkStatus.getConnectivityStatus(getApplicationContext());
+        if (netStatus == NetworkStatus.TYPE_WIFI || netStatus == NetworkStatus.TYPE_MOBILE) {
+            return true;
+        }
+        return false;
+    }
+
+    // 인터넷 연결 & 로그인 검증
+    public boolean isLogin(Config config){
+        if (textId.getText().toString().equals(config.getShopId())) {
+            if (textPw.getText().toString().equals(config.getShopPw())) {
                 return true;
             }
         }
         return false;
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == 101){
-//            String name = data.getStringExtra("name");
-//            //Toast.makeText(getApplicationContext(), "메뉴화면으로부터 응답 : " + name, Toast.LENGTH_LONG).show();
-//        }
-//    }
 
 }

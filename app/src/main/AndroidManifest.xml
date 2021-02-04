@@ -5,6 +5,9 @@
     <!-- 인터넷 사용을 위한 추가 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 인터넷 연결상태 체크  -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:usesCleartextTraffic="true"
@@ -18,7 +21,16 @@
         <activity android:name=".activity.DaySalesActivity" />
         <activity android:name=".activity.MonthSalesActivity" />
         <activity android:name=".activity.SelectRealActivity" />
-        <activity android:name=".activity.RealActivity" />
+
+        <!-- configChanges -->
+        <!-- 화면이 회전하거나
+        하드웨어 키보드를 닫을때에
+        해당 관련된 처리를 자동으로
+        처리하지 않고 액티비티 자체에서 알아서 하겠다는것을 알려주는 설정.-->
+        <activity
+            android:name=".activity.RealActivity"
+            android:configChanges="keyboardHidden|orientation">
+        </activity>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

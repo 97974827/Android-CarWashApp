@@ -39,8 +39,7 @@ public class SelfFragment extends Fragment {
 
     ArrayList<RealItem> selfItemsList;
     int selfCount;
-
-    RealItem[] selfItems;// = new RealItem[selfCount];
+    RealItem[] selfItems;
 
     Comparator<RealItem> cmpAsc = new Comparator<RealItem>() {
         @Override
@@ -58,6 +57,13 @@ public class SelfFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState==null) {
+        } else {
+            Log.d("TAG", "Fragment ");
+            deviceType = savedInstanceState.getInt("type");
+            deviceAddr = savedInstanceState.getString("addr");
+            connect = savedInstanceState.getString("connect");
+        }
         try {
             selfCount = Integer.parseInt(LoginActivity.vo.getSelfCount());
             selfItems = new RealItem[selfCount];
@@ -126,150 +132,6 @@ public class SelfFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-//    @Override
-////    public void onResume() {
-////        super.onResume();
-////        Log.d("메소드실행", "onResume()");
-////        realRecyclerAdapter.notifyDataSetChanged();
-////        recyclerView.invalidate();
-////    }
-
-//    // eventbus 받는 메소드
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void testEvent(RealActivity.DataEvent event){
-////        Log.d("deviceAddr", event.deviceAddr);
-////        Log.e("connect", event.connect);
-//
-//        eventBus = event;
-//
-//        int selfCount = Integer.parseInt(LoginActivity.vo.getSelfCount());
-//
-////        Log.d("***deviceType", Integer.toString(eventBus.deviceType));
-////        Log.d("***deviceAddr", eventBus.deviceAddr);
-////        Log.e("***connect", eventBus.connect);
-//
-////        realAdapter.deleteItem(RealAdapter.selfItems);
-//
-////        for (int i = 1; i <= selfCount; i++) {
-////            if (eventBus.connect.equals("1")) {
-////                realRecyclerAdapter.addItem(new RealItem(Integer.toString(i) + "번", "연결됨", R.drawable.real_active));
-////            } else {
-////                realRecyclerAdapter.addItem(new RealItem(Integer.toString(i) + "번", "연결안됨", R.drawable.real_diable));
-////            }
-////        }
-//
-//    }
-
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        try{
-//            EventBus.getDefault().unregister(this);
-//        }catch (Exception e){}
-//    }
-
-    // 실시간 모니터링
-    /*public void getDeviceState(){
-        String url = TapViewPagerAdapter.url + "get_device_state";
-
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                url,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) { // 여기에 응답이 떨어짐
-//                        if (progressDialog != null) {
-//                            progressDialog.dismiss(); // 종료
-//                        }
-
-                        try {
-
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray result = jsonObject.getJSONArray("result");
-
-                            for (int i=0; i < result.length(); i++) {
-                                JSONObject job= result.getJSONObject(i);  // JSONObject 추출
-
-                                deviceType = job.getInt("device_type");
-                                deviceAddr = job.getString("device_addr");
-                                connect = job.getString("connect");
-
-//                                Log.d("장비종류", Integer.toString(deviceType));
-//                                Log.d("장비번호", deviceAddr);
-//                                Log.d("통신상태", connect);
-
-                                switch (deviceType){
-                                    case 0:
-                                        for (int j=0; j<selfCount; j++) {
-                                            if (connect.equals("1")) {
-                                                selfItems[j] = new RealItem(Integer.toString(j+1) + "번" , "연결됨", R.drawable.real_active);
-                                            } else {
-                                                selfItems[j] = new RealItem(Integer.toString(j+1) + "번", "연결안됨", R.drawable.real_diable);
-                                            }
-                                            realRecyclerAdapter.addItem(selfItems[j]);
-                                            selfItemsList.add(selfItems[j]);
-                                        }
-
-                                        // UI 변경
-                                        realRecyclerAdapter.notifyDataSetChanged();
-                                        recyclerView.invalidate();
-
-                                        for (int index=0; index<selfCount; index++) {
-                                            Log.d("값 삭제 : " , Integer.toString(index));
-                                            selfItemsList.remove(index);
-                                            realRecyclerAdapter.removeItem(index);
-                                        }
-                                        break;
-//                                    case 3:
-//                                        for (int j=0; j<chargerCount; j++) {
-//                                            if (connect.equals("1")) {
-//                                                chargerItems[j] = new RealItem(Integer.toString(j+1) + "번" , "연결됨", R.drawable.real_active);
-//                                            } else {
-//                                                chargerItems[j] = new RealItem(Integer.toString(j+1) + "번", "연결안됨", R.drawable.real_diable);
-//                                            }
-//                                            realRecyclerAdapter.addItem(chargerItems[j]);
-//                                            chargerItemsList.add(chargerItems[j]);
-//                                        }
-//
-//                                        // UI 변경
-//                                        realRecyclerAdapter.notifyDataSetChanged();
-//                                        recyclerView.invalidate();
-//
-//                                        for (int index=0; index<chargerCount; index++) {
-//                                            Log.d("값 삭제 : " , Integer.toString(index));
-//                                            chargerItemsList.remove(index);
-//                                            realRecyclerAdapter.removeItem(index);
-//                                        }
-//                                        break;
-
-                                }
-                            }
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-
-                    }
-                }
-        ){
-            // 요청 파라미터 추가
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                return params;
-            }
-        };
-
-        request.setShouldCache(false); // 이전 결과가 있더라도 새로 요청해서 응답을 보여주게 됨
-        TapViewPagerAdapter.requestQueue.add(request); // 큐에 넣어줌
-
-    }*/
 
 
 }

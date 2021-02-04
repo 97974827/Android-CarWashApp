@@ -25,10 +25,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     OnItemClickListener listener;
     RecyclerView recyclerView;
 
-    /* TODO
-        1/27 리사이클러뷰 첫번꺠값 누락
-    */
-
     public CustomRecyclerViewAdapter(Context context, ArrayList<RealItem> items){
         this.context = context;
         this.items = items;
