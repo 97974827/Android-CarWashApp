@@ -18,59 +18,6 @@ public class Config implements Serializable { // 데이터 직렬화 상속 : in
     private String shopName;
     private int managerNo;
 
-//    // Parcel 객체에서 읽기
-//    public PosConfigVO(Parcel in) {
-//        selfCount = in.readString();
-//        airCount = in.readString();
-//        mateCount = in.readString();
-//        chargerCount = in.readString();
-//        touchCount = in.readString();
-//        readerCount = in.readString();
-//        shopId = in.readString();
-//        shopPw = in.readString();
-//        shopName = in.readString();
-//        managerNo = in.readInt();
-//    }
-//
-//    // CREATOR 상수 정의
-//    public static final Creator<PosConfigVO> CREATOR = new Creator<PosConfigVO>() {
-//        @Override
-//        public PosConfigVO createFromParcel(Parcel in) {
-//            return new PosConfigVO(in); // 생성자 호출해 Parcel 객체읽기
-//        }
-//
-//        @Override
-//        public PosConfigVO[] newArray(int size) {
-//            return new PosConfigVO[size];
-//        }
-//    };
-//
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    // Parcel 객체로 쓰기
-//    @Override
-//    public void writeToParcel(Parcel parcel, int i) {
-//        parcel.writeString(selfCount);
-//        parcel.writeString(airCount);
-//        parcel.writeString(mateCount);
-//        parcel.writeString(chargerCount);
-//        parcel.writeString(touchCount);
-//        parcel.writeString(readerCount);
-//        parcel.writeString(shopId);
-//        parcel.writeString(shopPw);
-//        parcel.writeString(shopName);
-//
-//        if (managerNo == null) {
-//            parcel.writeByte((byte) 0);
-//        } else {
-//            parcel.writeByte((byte) 1);
-//            parcel.writeInt(managerNo);
-//        }
-//    }
-
     @Override
     public String toString() {
         return "PosConfigVO{" +

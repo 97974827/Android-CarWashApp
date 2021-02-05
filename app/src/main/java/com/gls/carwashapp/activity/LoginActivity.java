@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isNetStatus()) { // 인터넷 연결검증
-                    if (isLogin(vo)) { // 로그인 검증
+                    if (isLogin(config)) { // 로그인 검증
                         Intent intent = new Intent(getApplicationContext(), RealActivity.class);
 //                        intent.putExtra("config", config);
                         Toast.makeText(getApplicationContext(), textId.getText().toString() + "님 환영합니다.", Toast.LENGTH_SHORT).show();

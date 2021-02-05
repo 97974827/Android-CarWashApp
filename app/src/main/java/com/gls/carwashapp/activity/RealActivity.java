@@ -102,18 +102,18 @@ public class RealActivity extends AppCompatActivity {
         bindView(getIntent());
     }
 
-    // onPause 직전에 호출되는 부분, 강제로 종료되는 상황에 대비하여 액티비티 상태정보 저장
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState() 호출됨");
-        outState.putInt("type", deviceType);
-        outState.putString("addr", deviceAddr);
-        outState.putString("connect", connect);
-        Log.d("type", Integer.toString(deviceType));
-        Log.d("addr", deviceAddr);
-        Log.d("connect", connect);
-    }
+//    // onPause 직전에 호출되는 부분, 강제로 종료되는 상황에 대비하여 액티비티 상태정보 저장
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        Log.d(TAG, "onSaveInstanceState() 호출됨");
+//        outState.putInt("type", deviceType);
+//        outState.putString("addr", deviceAddr);
+//        outState.putString("connect", connect);
+//        Log.d("type", Integer.toString(deviceType));
+//        Log.d("addr", deviceAddr);
+//        Log.d("connect", connect);
+//    }
 
     @Override
     protected void onStart() {
